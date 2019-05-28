@@ -1,0 +1,15 @@
+[package]
+name = "oci-spec"
+version = "0.1.0"
+authors = ["smiyaguchi <smiyaguchi96@gmail.com>"]
+edition = "2018"
+description = "OCI(Open Container Initiative) Runtime-Spec and Image-Spec for Rust"
+repository = "https://github.com/smiyaguchi/oci-spec"
+readme = "README.md"
+keywords = ["oci", "spec"]
+license-file = "LICENSE"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] } 
+serde_derive = "1.0"
+serde_json = "1.0"
