@@ -1,4 +1,5 @@
 #![allow(non_camel_case_types)]
+use super::serdes::{serialize, deserialize, SerDesError};
 
 use std::collections::HashMap;
 
@@ -371,13 +372,13 @@ pub struct User {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum LinuxNamespaceType {
-    PID,
-    NETWORK,
-    MOUNT,
-    IPC,
-    UTS,
-    USER,
-    CGROUP,    
+    pid,
+    network,
+    mount,
+    ipc, 
+    uts,
+    user,
+    cgroup,    
 }
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LinuxNamespace {
@@ -490,4 +491,13 @@ pub struct Spec {
     pub linux: Option<Linux>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub solaris: Option<Solaris>,
+}
+
+impl Spec {
+    pub fn load(path: &str) -> Result<Spec, SerDesError> {
+        deserialize(path)    
+    }
+    pub fn save(&self, path: &str) -> Result<(), SerDesError> {
+        serialize(self, path)    
+    }
 }
