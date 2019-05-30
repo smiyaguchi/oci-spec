@@ -164,11 +164,20 @@ pub struct LinuxRdma {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub enum LinuxDeviceType {
+    b,
+    c,
+    u,
+    p,
+    a,    
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct LinuxDeviceCgroup {
     #[serde(default)]
     pub allow: bool,
-    #[serde(default, skip_serializing_if = "String::is_empty", rename = "type")]
-    pub typ: String,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "type")]
+    pub typ: Option<LinuxDeviceType>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub major: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -211,8 +220,8 @@ pub struct LinuxIDMapping {
 pub struct LinuxDevice {
     #[serde(default)]
     pub path: String,
-    #[serde(default, rename = "type")]
-    pub typ: String,
+    #[serde(rename = "type")]
+    pub typ: LinuxDeviceType,
     #[serde(default)]
     pub major: i64,
     #[serde(default)]
