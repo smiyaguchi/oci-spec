@@ -409,29 +409,29 @@ pub struct POSIXRlimit {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Process {
-    #[serde(default, skip_serializing_if = "is_false")]
-    pub terminal: bool,
-    #[serde(default, rename = "consoleSize")]
-    pub console_size: Box,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub terminal: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "consoleSize")]
+    pub console_size: Option<Box>,
     pub user: User,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub args: Vec<String>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub env: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub args: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub env: Option<Vec<String>>,
     #[serde(default)]
     pub cwd: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub capabilities: Option<LinuxCapabilities>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub rlimits: Vec<POSIXRlimit>,
-    #[serde(default, skip_serializing_if = "is_false", rename = "noNewPrivileges")]
-    pub no_new_privileges: bool,
-    #[serde(default, skip_serializing_if = "String::is_empty", rename = "apparmorProfile")]
-    pub apparmor_profile: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rlimits: Option<Vec<POSIXRlimit>>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "noNewPrivileges")]
+    pub no_new_privileges: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "apparmorProfile")]
+    pub apparmor_profile: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none", rename = "oomScoreAdj")]
     pub oom_score_adj: Option<i32>,
-    #[serde(default, skip_serializing_if = "String::is_empty", rename = "selinuxLabel")]
-    pub selinux_label: String,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "selinuxLabel")]
+    pub selinux_label: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
