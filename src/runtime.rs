@@ -484,18 +484,20 @@ pub struct Solaris {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Spec {
-    #[serde(default, skip_serializing_if = "String::is_empty", rename = "ociVersion")]
+    #[serde(default, rename = "ociVersion")]
     pub version: String,
-    pub process: Process,
-    pub root: Root,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub hostname: String,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub mounts: Vec<Mount>,
+    #[serde(default, skip_serializing_if = "Option::is_none")] 
+    pub process: Option<Process>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub root: Option<Root>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hostname: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mounts: Option<Vec<Mount>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub hooks: Option<Hooks>,
-    #[serde(default, skip_serializing_if = "HashMap::is_empty")]
-    pub annotations: HashMap<String, String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub annotations: Option<HashMap<String, String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub linux: Option<Linux>,
     #[serde(skip_serializing_if = "Option::is_none")]
