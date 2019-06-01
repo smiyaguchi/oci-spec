@@ -3,50 +3,46 @@ use super::serdes::{serialize, deserialize, SerDesError};
 
 use std::collections::HashMap;
 
-fn is_false(b: &bool) -> bool {
-    !b    
-}
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Root {
     #[serde(default)]
     pub path: String,
-    #[serde(default, skip_serializing_if = "is_false")]
-    pub readonly: bool,    
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub readonly: Option<bool>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Mount {
     #[serde(default)]
     pub destination: String,
-    #[serde(default, skip_serializing_if = "String::is_empty", rename = "type")]
-    pub typ: String,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub source: String,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub options: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "type")]
+    pub typ: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub source: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub options: Option<Vec<String>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Hook {
-    #[serde(default, skip_serializing_if = "String::is_empty")]
+    #[serde(default)]
     pub path: String,    
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub args: Vec<String>,    
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub env: Vec<String>,    
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub args: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub env: Option<Vec<String>>,    
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub timeout: Option<i64>,    
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Hooks {
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub prestart: Vec<Hook>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub poststart: Vec<Hook>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub poststop: Vec<Hook>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub prestart: Option<Vec<Hook>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub poststart: Option<Vec<Hook>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub poststop: Option<Vec<Hook>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -63,8 +59,8 @@ pub struct LinuxMemory {
     pub kernel_tcp: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub swappiness: Option<u64>,
-    #[serde(skip_serializing_if = "is_false", rename = "disableOOMKiller")]
-    pub disable_oom_killer: bool,
+    #[serde(skip_serializing_if = "Option::is_none", rename = "disableOOMKiller")]
+    pub disable_oom_killer: Option<bool>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -79,10 +75,10 @@ pub struct LinuxCPU {
     pub realtime_runtime: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none", rename = "realtimePeriod")]
     pub realtime_period: Option<u64>,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub cpus: String,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub mems: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cpus: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mems: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -97,16 +93,16 @@ pub struct LinuxBlockIO {
     pub weight: Option<u16>,
     #[serde(skip_serializing_if = "Option::is_none", rename = "leafWeight")]
     pub leaf_weight: Option<u16>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "weightDevice")]
-    pub weight_device: Vec<LinuxWeightDevice>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "throttleReadBpsDevice")]
-    pub throttle_read_bps_device: Vec<LinuxThrottleDevice>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "throttleWriteBpsDevice")]
-    pub throttle_write_bps_device: Vec<LinuxThrottleDevice>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "throttleReadIOPSDevice")]
-    pub throttle_read_iops_device: Vec<LinuxThrottleDevice>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "throttleWriteIOPSDevice")]
-    pub throttle_write_iops_device: Vec<LinuxThrottleDevice>,    
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "weightDevice")]
+    pub weight_device: Option<Vec<LinuxWeightDevice>>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "throttleReadBpsDevice")]
+    pub throttle_read_bps_device: Option<Vec<LinuxThrottleDevice>>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "throttleWriteBpsDevice")]
+    pub throttle_write_bps_device: Option<Vec<LinuxThrottleDevice>>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "throttleReadIOPSDevice")]
+    pub throttle_read_iops_device: Option<Vec<LinuxThrottleDevice>>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "throttleWriteIOPSDevice")]
+    pub throttle_write_iops_device: Option<Vec<LinuxThrottleDevice>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -151,8 +147,8 @@ pub struct LinuxThrottleDevice {
 pub struct LinuxNetwork {
     #[serde(skip_serializing_if = "Option::is_none", rename = "classID")]
     pub class_id: Option<u32>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub priorities: Vec<LinuxInterfacePriority>,    
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub priorities: Option<Vec<LinuxInterfacePriority>>, 
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -182,14 +178,14 @@ pub struct LinuxDeviceCgroup {
     pub major: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub minor: Option<i64>,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub access: String,    
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub access: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LinuxResources {
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub devices: Vec<LinuxDeviceCgroup>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub devices: Option<Vec<LinuxDeviceCgroup>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub memory: Option<LinuxMemory>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -198,12 +194,12 @@ pub struct LinuxResources {
     pub pids: Option<LinuxPids>,
     #[serde(skip_serializing_if = "Option::is_none", rename = "blockIO")]
     pub block_io: Option<LinuxBlockIO>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "hugepageLimits")]
-    pub hugepage_limits: Vec<LinuxHugepageLimit>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "hugepageLimits")]
+    pub hugepage_limits: Option<Vec<LinuxHugepageLimit>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub network: Option<LinuxNetwork>,
-    #[serde(default, skip_serializing_if = "HashMap::is_empty")]
-    pub rdma: HashMap<String, LinuxRdma>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rdma: Option<HashMap<String, LinuxRdma>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -260,8 +256,8 @@ pub struct LinuxSeccompArg {
     pub index: usize,
     #[serde(default)]
     pub value: u64,
-    #[serde(default, rename = "valueTwo")]
-    pub value_two: u64,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "valueTwo")]
+    pub value_two: Option<u64>,
     pub op: LinuxSeccompOperator,    
 }
 
@@ -291,72 +287,72 @@ pub struct LinuxSyscall {
     #[serde(default)]
     pub names: Vec<String>,
     pub actions: LinuxSeccompAction,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub args: Vec<LinuxSeccompArg>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub args: Option<Vec<LinuxSeccompArg>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LinuxSeccomp {
     #[serde(rename = "defaultAction")]
     pub default_action: LinuxSeccompAction,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub architectures: Vec<Arch>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub syscalls: Vec<LinuxSyscall>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub architectures: Option<Vec<Arch>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub syscalls: Option<Vec<LinuxSyscall>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LinuxIntelRdt {
-    #[serde(default, skip_serializing_if = "String::is_empty", rename = "closID")]
-    pub clos_id: String,
-    #[serde(default, skip_serializing_if = "String::is_empty", rename = "l3CacheSchema")]
-    pub l3_cache_schema: String,
-    #[serde(default, skip_serializing_if = "String::is_empty", rename = "memBwSchema")]
-    pub mem_bw_schema: String,    
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "closID")]
+    pub clos_id: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "l3CacheSchema")]
+    pub l3_cache_schema: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "memBwSchema")]
+    pub mem_bw_schema: Option<String>,    
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Linux {
-    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "uidMappings")]
-    pub uid_mappings: Vec<LinuxIDMapping>,    
-    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "gidMappings")]
-    pub gid_mappings: Vec<LinuxIDMapping>,
-    #[serde(default, skip_serializing_if = "HashMap::is_empty")]
-    pub sysctl: HashMap<String, String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "uidMappings")]
+    pub uid_mappings: Option<Vec<LinuxIDMapping>>,    
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "gidMappings")]
+    pub gid_mappings: Option<Vec<LinuxIDMapping>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sysctl: Option<HashMap<String, String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resources: Option<LinuxResources>,
-    #[serde(default, skip_serializing_if = "String::is_empty", rename = "cgroupsPath")]
-    pub cgroups_path: String,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub namespaces: Vec<LinuxNamespace>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub devices: Vec<LinuxDevice>,
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "cgroupsPath")]
+    pub cgroups_path: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub namespaces: Option<Vec<LinuxNamespace>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub devices: Option<Vec<LinuxDevice>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub seccomp: Option<LinuxSeccomp>,
-    #[serde(default, skip_serializing_if = "String::is_empty", rename = "rootfsPropagation")]
-    pub rootfs_propagation: String,
-    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "maskedPaths")]
-    pub masked_paths: Vec<String>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "readonlyPaths")]
-    pub readonly_paths: Vec<String>,
-    #[serde(default, skip_serializing_if = "String::is_empty", rename = "mountLabel")]
-    pub mount_label: String,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "rootfsPropagation")]
+    pub rootfs_propagation: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "maskedPaths")]
+    pub masked_paths: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "readonlyPaths")]
+    pub readonly_paths: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "mountLabel")]
+    pub mount_label: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none", rename = "intelRdt")]
     pub intel_rdt: Option<LinuxIntelRdt>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LinuxCapabilities {
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub bounding: Vec<String>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub effective: Vec<String>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub inheritable: Vec<String>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub permitted: Vec<String>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub ambient: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub bounding: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub effective: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub inheritable: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub permitted: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ambient: Option<Vec<String>>,
 }
 
 #[derive(Default, Serialize, Deserialize, Debug)]
@@ -373,10 +369,10 @@ pub struct User {
     pub uid: u32,
     #[serde(default)]
     pub gid: u32,
-    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "additionalGids")]
-    pub additional_gids: Vec<u32>,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub username: String,
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "additionalGids")]
+    pub additional_gids: Option<Vec<u32>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub username: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -393,8 +389,8 @@ pub enum LinuxNamespaceType {
 pub struct LinuxNamespace {
     #[serde(rename = "type")]
     pub typ: LinuxNamespaceType,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub path: String,    
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
