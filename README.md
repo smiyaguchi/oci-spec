@@ -12,7 +12,7 @@ fn main() {
         Ok(s) => s,
         Err(e) => panic!("{}", e),
     }
-    println("oci-runtime-spec version is {}", spec.version);
+    println!("oci-runtime-spec version is {}", spec.version);
 }
 ```
 
