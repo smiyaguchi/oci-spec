@@ -522,7 +522,8 @@ pub struct Windows {
     pub devices: Option<Vec<WindowsDevice>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resources: Option<WindowsResources>,
-    // TODO define CredentialSpec
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "credentialSpec")]
+    pub credential_spec: Option<HashMap<String, Option<serde_json::Value>>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub servicing: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none", rename = "ignoreFlushesDuringBoot")]
