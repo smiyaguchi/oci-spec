@@ -7,7 +7,7 @@ description = "OCI(Open Container Initiative) Runtime-Spec and Image-Spec for Ru
 repository = "https://github.com/smiyaguchi/oci-spec"
 readme = "README.md"
 keywords = ["oci", "spec"]
-license = "MIT"
+license = "MIT OR Apache-2.0"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] } 

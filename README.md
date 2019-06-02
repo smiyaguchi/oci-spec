@@ -17,4 +17,4 @@ fn main() {
 ```
 
 # License
-oci-spec is under the MIT license.
+oci-spec is under the MIT or Apache-2.0 license.
