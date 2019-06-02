@@ -1,7 +1,8 @@
 #![allow(non_camel_case_types)]
-use super::serdes::{serialize, deserialize, SerDesError};
+use super::serdes::{deserialize, serialize, to_string, to_writer, SerDesError};
 
 use std::collections::HashMap;
+use std::io::Write;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Root {
@@ -606,5 +607,28 @@ impl Spec {
     }
     pub fn save(&self, path: &str) -> Result<(), SerDesError> {
         serialize(self, path)    
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct State {
+    #[serde(rename = "ociVersion")]
+    pub version: String,
+    pub id: String,
+    pub status: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pid: Option<i32>,
+    pub bundle: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub annotations: Option<HashMap<String, String>>,
+}
+
+impl State {
+    pub fn to_string(&self) -> Result<String, SerDesError> {
+        to_string(self)    
+    }
+
+    pub fn to_writer<W: Write>(&self, mut writer: W) -> Result<(), SerDesError> {
+        to_writer(self, &mut writer)    
     }
 }

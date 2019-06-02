@@ -8,7 +8,9 @@ mod serdes;
 
 #[cfg(test)]
 mod tests {
-    use crate::runtime::Spec;
+    use crate::runtime::{Spec, State};
+    use std::collections::HashMap;
+    use std::io::{Write, BufWriter};
 
     #[test]
     fn test_load() {
@@ -28,5 +30,41 @@ mod tests {
             Ok(_) => {},
             Err(e) => panic!("{}", e),    
         }
+    }
+
+    #[test]
+    fn test_writer() {
+        let buf = Vec::new();
+        let mut writer = BufWriter::new(buf);
+        let state = State {
+            version: "1.0.1-dev".to_string(),
+            id: 1000.to_string(),
+            status: "created".to_string(),
+            pid: Some(1),
+            bundle: "/test".to_string(),
+            annotations: Some(HashMap::new()),    
+        };
+
+        match State::to_writer(&state, writer.by_ref()) {
+            Ok(_) => {},
+            Err(e) => panic!("{}", e),    
+        }
+    }
+
+    #[test]
+    fn test_string() {
+        let state = State {
+            version: "1.0.1-dev".to_string(),
+            id: 1000.to_string(),
+            status: "created".to_string(),
+            pid: Some(1),
+            bundle: "/test".to_string(),
+            annotations: Some(HashMap::new()),
+        };
+        
+        match State::to_string(&state) {
+            Ok(_) => {},
+            Err(e) => panic!("{}", e),    
+        }    
     }
 }

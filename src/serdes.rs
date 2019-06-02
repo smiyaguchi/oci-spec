@@ -59,3 +59,11 @@ pub fn deserialize<T>(path: &str) -> Result<T, SerDesError>
     let file = File::open(path)?;
     Ok(serde_json::from_reader(&file)?)    
 }
+
+pub fn to_writer<W: io::Write, T: serde::Serialize>(obj: &T, mut writer: W) -> Result<(), SerDesError> {
+    Ok(serde_json::to_writer(&mut writer, &obj)?)    
+}
+
+pub fn to_string<T: serde::Serialize>(obj: &T) -> Result<String, SerDesError> {
+    Ok(serde_json::to_string(&obj)?)    
+}
