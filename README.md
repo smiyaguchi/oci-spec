@@ -1,4 +1,7 @@
 # oci-spec
+[![oci-spec at crates.io](https://img.shields.io/crates/v/oci-spec.svg)](https://crates.io/crates/oci-spec)
+[![oci-spec at docs.rs](https://docs.rs/oci-spec/badge.svg)](https://docs.rs/oci-spec)
+
 oci-spec is a library for Serializer/Deserialiser [oci-runtime-spec](https://github.com/opencontainers/runtime-spec) and [oci-image-spec](https://github.com/opencontainers/image-spec) config.
 
 # Usage
