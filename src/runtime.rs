@@ -147,7 +147,7 @@ pub struct LinuxRdma {
     pub hca_objects: Option<u32>,    
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 pub enum LinuxDeviceType {
     b,
     c,
@@ -213,7 +213,7 @@ pub struct LinuxDevice {
     pub gid: Option<u32>,    
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 pub enum LinuxSeccompAction {
     SCMP_ACT_KILL,
     SCMP_ACT_TRAP,
@@ -222,7 +222,7 @@ pub enum LinuxSeccompAction {
     SCMP_ACT_ALLOW,    
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 pub enum LinuxSeccompOperator {
     SCMP_CMP_NE,
     SCMP_CMP_LT,
@@ -242,7 +242,7 @@ pub struct LinuxSeccompArg {
     pub op: LinuxSeccompOperator,    
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 pub enum Arch {
     SCMP_ARCH_NATIVE,
     SCMP_ARCH_X86,
@@ -351,7 +351,7 @@ pub struct User {
     pub username: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 pub enum LinuxNamespaceType {
     pid,
     network,
@@ -550,7 +550,7 @@ pub struct VMKernel {
     pub initrd: Option<String>,    
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 pub enum VMFormat {
     raw,
     qcow2,
