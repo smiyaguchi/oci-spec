@@ -1,6 +1,6 @@
 [package]
 name = "oci-spec"
-version = "0.2.3"
+version = "0.2.4"
 authors = ["smiyaguchi <smiyaguchi96@gmail.com>"]
 edition = "2018"
 description = "OCI(Open Container Initiative) Runtime-Spec and Image-Spec for Rust"
