@@ -26,6 +26,7 @@ mod tests {
             Ok(s) => s,
             Err(e) => panic!("{}", e),    
         };
+
         match Spec::save(&spec, "config.json") {
             Ok(_) => {},
             Err(e) => panic!("{}", e),    
