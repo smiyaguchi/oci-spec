@@ -1,5 +1,5 @@
 #![allow(non_camel_case_types)]
-use super::serdes::{deserialize, serialize, to_string, to_writer, SerDesError};
+use super::serdes::{deserialize, serialize, to_string, to_writer, OciSpecError};
 
 use std::collections::HashMap;
 use std::io::Write;
@@ -149,11 +149,9 @@ pub struct LinuxRdma {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Copy)]
-pub enum LinuxDeviceType {
+pub enum LinuxDeviceCgroupType {
     b,
     c,
-    u,
-    p,
     a,    
 }
 
@@ -161,7 +159,7 @@ pub enum LinuxDeviceType {
 pub struct LinuxDeviceCgroup {
     pub allow: bool,
     #[serde(default, skip_serializing_if = "Option::is_none", rename = "type")]
-    pub typ: Option<LinuxDeviceType>,
+    pub typ: Option<LinuxDeviceCgroupType>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub major: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -197,6 +195,14 @@ pub struct LinuxIDMapping {
     #[serde(rename = "containerID")]
     pub container_id: u32,
     pub size: u32,    
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
+pub enum LinuxDeviceType {
+    b,
+    c,
+    u,
+    p,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -644,10 +650,10 @@ pub struct Spec {
 }
 
 impl Spec {
-    pub fn load(path: &str) -> Result<Spec, SerDesError> {
+    pub fn load(path: &str) -> Result<Spec, OciSpecError> {
         deserialize(path)    
     }
-    pub fn save(&self, path: &str) -> Result<(), SerDesError> {
+    pub fn save(&self, path: &str) -> Result<(), OciSpecError> {
         serialize(self, path)    
     }
 }
@@ -666,11 +672,11 @@ pub struct State {
 }
 
 impl State {
-    pub fn to_string(&self) -> Result<String, SerDesError> {
+    pub fn to_string(&self) -> Result<String, OciSpecError> {
         to_string(self)    
     }
 
-    pub fn to_writer<W: Write>(&self, mut writer: W) -> Result<(), SerDesError> {
+    pub fn to_writer<W: Write>(&self, mut writer: W) -> Result<(), OciSpecError> {
         to_writer(self, &mut writer)    
     }
 }
