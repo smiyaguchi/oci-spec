@@ -16,7 +16,8 @@ For example, `ociVersion` is a required item in oci-runtime-spec, but if `ociVer
 Although `root` is an object type and internally has a required `path`, no error occurs even if there is no value in JSON.
 However, if `root` has a value in JSON and the value of the required item held internally is not in JSON, an error occurs.
 
-```
+Example:
+```rust
 extern crate oci_spec;
 
 use oci_spec::runtime::Spec;
@@ -36,7 +37,8 @@ Use `save` of `Spec` to serialize oci runtime spec config.
 
 If the type is Option and the value is None, it is not serialized.
 
-```
+Example:
+```rust
 extern crate oci_spec;
 
 use oci_spec::runtime::Spec;
