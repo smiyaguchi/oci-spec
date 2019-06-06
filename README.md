@@ -9,7 +9,7 @@ oci-spec is a library for Serialize/Deserialize [oci-runtime-spec](https://githu
 Use `load` of `Spec` to deserialize oci-runtime-spec config.
 
 If it is a required item in oci-runtime-spec but there is no value in JSON, an error will occur.
-Also, if there is no JSON value in the optional item in oci-runtime-spec, None will be set.
+Also if there is no JSON value in the optional item in oci-runtime-spec, None will be set.
 
 For example, `ociVersion` is a required item in oci-runtime-spec, but if `ociVersion` does not exist in JSON, an error occurs.
 
@@ -49,7 +49,6 @@ fn main() {
         Ok(s) => s,
         Err(e) => panic!("{}", e),
     }
-    println!("oci-runtime-spec version is {}", spec.version);
     
     // Serialize oci runtime specification config.
     match Spec::save(&spec, "config.json") {
