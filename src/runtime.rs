@@ -410,6 +410,7 @@ pub enum LinuxNamespaceType {
     user,
     cgroup,    
 }
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LinuxNamespace {
     #[serde(rename = "type")]
