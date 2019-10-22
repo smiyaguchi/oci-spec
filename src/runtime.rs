@@ -2,6 +2,7 @@
 use super::serdes::{deserialize, serialize, to_string, to_writer, OciSpecError};
 
 use std::collections::HashMap;
+use std::fmt;
 use std::io::Write;
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -409,6 +410,20 @@ pub enum LinuxNamespaceType {
     uts,
     user,
     cgroup,    
+}
+
+impl fmt::Display for LinuxNamespaceType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            LinuxNamespaceType::pid => write!(f, "pid"),
+            LinuxNamespaceType::network => write!(f, "network"),
+            LinuxNamespaceType::mount => write!(f, "mount"),
+            LinuxNamespaceType::ipc => write!(f, "ipc"),
+            LinuxNamespaceType::uts => write!(f, "uts"),
+            LinuxNamespaceType::user => write!(f, "user"),
+            LinuxNamespaceType::cgroup => write!(f, "cgroup"),
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug)]

@@ -28,7 +28,7 @@ impl Error for OciSpecError {
             OciSpecError::Json(ref err) => err.description(),    
         }    
     }
-    fn cause(&self) -> Option<&Error> {
+    fn cause(&self) -> Option<&dyn Error> {
         match *self {
             OciSpecError::Io(ref err) => Some(err),
             OciSpecError::Json(ref err) => Some(err),    
